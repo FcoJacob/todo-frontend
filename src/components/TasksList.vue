@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <main>
     <add-task></add-task>
-    <ul>
+     <ul>
       <li v-for="task in tasks">
-        <input type="checkbox" :checked="task.done" :id="task._id" @click="toggleTask">
+        <input type="checkbox" 
+               :checked="task.done" 
+               :id="task._id" 
+               @click="toggleTask">
         {{task.title}}
       </li>
     </ul>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -23,15 +26,15 @@ export default {
     return {
       tasks: [],
       errors: []
-    };
+    }
   },
-  created: function() {
-    this.getTasks();
+  created() {
+    this.getTasks()
   },
   methods: {
     async toggleTask(event) {
       try {
-        const response = await axios.put(
+        await axios.put(
           `http://localhost:5000/tareas/${event.target.id}`,
           { 
             done: event.target.checked 
@@ -44,10 +47,10 @@ export default {
     },
     async getTasks() {
       try {
-        const response = await axios.get(`http://localhost:5000/tareas`);
-        this.tasks = response.data.tasks;
+        const { data } = await axios.get(`http://localhost:5000/tareas`);
+        this.tasks = data.tasks;
       } catch (e) {
-        return e;
+        this.errors.push(e);
       }
     }
   }
@@ -56,11 +59,21 @@ export default {
 
 
 <style scoped>
+ul{
+  -webkit-margin-before: 0px;
+  -webkit-margin-after: 0px;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 0px;
+}
+
 li {
   list-style: none;
 }
 
-ul {
-  margin: 0 auto;
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

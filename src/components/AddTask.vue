@@ -1,5 +1,8 @@
 <template>
-  <input type="text" v-model="task.title" @keydown.enter="addTask">
+  <input type="text" 
+         v-model="task.title" 
+         @keydown.enter="addTask" 
+         placeholder="Add new task">
 </template>
 
 <script>
@@ -7,7 +10,7 @@ import axios from "axios";
 
 export default {
   name: "AddTask",
-  data() {
+  data(){
     return {
       task: {
         title: ""
@@ -15,9 +18,9 @@ export default {
     };
   },
   methods: {
-    async addTask(event) {
+    async addTask(event){
       try {
-        const response = await axios.post(
+        await axios.post(
           `http://localhost:5000/tareas/`, 
           { 
             title: this.task.title 
