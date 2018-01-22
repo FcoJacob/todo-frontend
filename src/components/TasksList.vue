@@ -1,13 +1,9 @@
 <template>
   <main>
-    <add-task></add-task>
+    <add-task @new-task="getTasks"></add-task>
      <ul>
       <li v-for="task in tasks">
-        <input type="checkbox" 
-               :checked="task.done" 
-               :id="task._id" 
-               @click="toggleTask">
-        {{task.title}}
+        <task :task="task"></task>
       </li>
     </ul>
   </main>
@@ -15,12 +11,14 @@
 
 <script>
 import AddTask from "./AddTask.vue";
+import Task from "./Task.vue";
 import axios from "axios";
 
 export default {
   name: "TasksList",
   components: {
-    "add-task": AddTask
+    "add-task": AddTask,
+    "task": Task
   },
   data() {
     return {
@@ -29,22 +27,9 @@ export default {
     }
   },
   created() {
-    this.getTasks()
+    this.getTasks();
   },
   methods: {
-    async toggleTask(event) {
-      try {
-        await axios.put(
-          `http://localhost:5000/tareas/${event.target.id}`,
-          { 
-            done: event.target.checked 
-          }
-        );
-        this.getTasks();
-      } catch (e) {
-        this.errors.push(e);
-      }
-    },
     async getTasks() {
       try {
         const { data } = await axios.get(`http://localhost:5000/tareas`);

@@ -27,6 +27,7 @@ export default {
           }
         );
         this.task.title = "";
+        this.$emit('new-task');
       } catch (e) {
         this.errors.push(e);
       }
